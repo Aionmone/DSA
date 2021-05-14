@@ -61,12 +61,12 @@ class Stack:
     # Private methods
     def __isEmpty(self):
         '''Checks if stack is empty'''
-        if len(self.__stack) == 0:
+        if len(self.__stack) < 1:
             return True
         return False
 
     def __isFull(self):
         '''Checks if stack is full'''
-        if len(self.__stack) == self.__capacity:
+        if len(self.__stack) >= self.__capacity:
             return True
         return False
