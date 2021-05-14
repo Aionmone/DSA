@@ -30,17 +30,17 @@ class QueueTestCase(unittest.TestCase):
 
     def test_isEmpty(self):
         '''Test Queue isEmpty property'''
-        self.assertTrue(self.queue.isEmpty)
+        self.assertTrue(self.queue.isEmpty())
 
         self.queue.enqueue(0)
-        self.assertFalse(self.queue.isEmpty)
+        self.assertFalse(self.queue.isEmpty())
 
     def test_isFull(self):
         '''Test Queue isFull property'''
-        self.assertFalse(self.queue.isFull)
+        self.assertFalse(self.queue.isFull())
 
         self.__fill_queue()
-        self.assertTrue(self.queue.isFull)
+        self.assertTrue(self.queue.isFull())
 
     def test_peek(self):
         '''Test Queue peek property'''

@@ -32,17 +32,17 @@ class StackTestCase(unittest.TestCase):
 
     def test_isEmpty(self):
         '''Test for stack isEmpty'''
-        self.assertTrue(self.stack.isEmpty)
+        self.assertTrue(self.stack.isEmpty())
 
         self.stack.push(0)
-        self.assertFalse(self.stack.isEmpty)
+        self.assertFalse(self.stack.isEmpty())
 
     def test_isFull(self):
         '''Test for stack isFull'''
-        self.assertFalse(self.stack.isFull)
+        self.assertFalse(self.stack.isFull())
 
         self.__fill_stack()
-        self.assertTrue(self.stack.isFull)
+        self.assertTrue(self.stack.isFull())
 
     def test_peek(self):
         '''Test for stack peek'''
