@@ -21,7 +21,7 @@ class QueueTestCase(unittest.TestCase):
 
     def test_dequeue(self):
         '''Test for dequeue method'''
-        self.assertEqual(self.queue.dequeue(), 0)
+        self.assertEqual(self.queue.peek, self.queue.dequeue())
 
         self.__empty_queue()
         with self.assertRaises(QueueEmpty):
