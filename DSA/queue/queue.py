@@ -17,18 +17,7 @@ class Queue:
         '''Prints currunt queue'''
         return str(self.__queue)
 
-    def enqueue(self, item) -> None:
-        '''Add item to queue'''
-        if self.__isFull():
-            raise QueueFull
-        self.__queue.append(item)
-
-    def dequeue(self) -> None:
-        '''Remove item from queue'''
-        if self.__isEmpty():
-            raise QueueEmpty
-        return self.__queue.pop(0)
-
+    # Properties
     @property
     def capacity(self):
         return self.__capacity
@@ -40,25 +29,34 @@ class Queue:
     @property
     def peek(self):
         '''Shows last item in stack'''
-        if self.__isEmpty():
+        if self.isEmpty():
             raise QueueEmpty
         return self.__queue[0]
 
-    @property
+    def enqueue(self, item) -> None:
+        '''Add item to queue'''
+        if self.isFull():
+            raise QueueFull
+        self.__queue.append(item)
+
+    def dequeue(self) -> None:
+        '''Remove item from queue'''
+        if self.isEmpty():
+            raise QueueEmpty
+        return self.__queue.pop(0)
+
+    def display(self):
+        '''Returns self'''
+        return self.__queue()
+
     def isEmpty(self) -> bool:
-        return self.__isEmpty()
-
-    @property
-    def isFull(self):
-        return self.__isFull()
-
-    # Private methods
-    def __isEmpty(self) -> bool:
+        '''Checks either Queue is empty or not.'''
         if len(self.__queue) < 1:
             return True
         return False
 
-    def __isFull(self) -> bool:
+    def isFull(self):
+        '''Checks either Queue is full or not.'''
         if self.__capacity and len(self.__queue) >= self.__capacity:
             return True
         return False
