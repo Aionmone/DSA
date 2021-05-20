@@ -70,6 +70,10 @@ class Stack:
 
     def push(self, data) -> None:
         """Adds new data to stack.
+
+        Args:
+            data:
+                Data to be set in stack.
         
         Raise:
             StackFull:
