@@ -15,6 +15,6 @@ class Node:
             Pointer to the next Node.
     """
     def __init__(self, data) -> None:
-        self.item = data
+        self.data = data
         self.prev: Node = None
         self.next: Node = None
