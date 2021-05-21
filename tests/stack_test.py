@@ -50,8 +50,7 @@ class StackTestCase(unittest.TestCase):
         while len(self.stack) >= 1:
             self.assertEqual(self.stack.peek, self.stack.pop(), msg='Should returns equal')
 
-        with self.assertRaises(StackEmpty):
-            self.stack.peek
+        self.assertIsNone(self.stack.peek, "Should returns None.")
 
     def __fill_stack(self):
         '''Fill stack for testing'''

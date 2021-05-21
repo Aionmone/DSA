@@ -48,8 +48,7 @@ class QueueTestCase(unittest.TestCase):
         while len(self.queue) >= 1:
             self.assertEqual(self.queue.peek, self.queue.dequeue())
 
-        with self.assertRaises(QueueEmpty):
-            self.queue.peek
+        self.assertIsNone(self.queue.peek, "Should returns None.")
 
     # Private methods
     def __set_capacity(self, capacity= 15):
