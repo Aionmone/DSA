@@ -22,10 +22,16 @@ class LinkedList:
             Fetches linked list length.
         __iter__:
             Iterate over linked list data.
-        insert:
+        push:
+            Add new node at head.
+        append:
+            Add new node at tail.
+        insert_after:
             Add new data to linked list.
-        show:
+        display:
             Retern list representation of linked list.
+        get:
+            Retrieves data from linked list.
     """
     def __init__(self) -> None:
         """Initiate LinkedList class."""
@@ -71,13 +77,25 @@ class LinkedList:
         else:
             raise StopIteration
 
-    def insert(self, data: Any, index: int) -> None:
-        """Insert new data to linked list.
+    # Insertion operations
+    def push(self, data) -> None:
+        """Add data at the head of linked list.
 
         Args:
-            data: @any
+            data:
+                New data to add to linked list.
+        """
+        new_node = Node(data)
+        new_node.next = self.__head
+        self.__head = new_node
+
+    def insert_after(self, data: Any, index: int) -> None:
+        """Insert new data after index.
+
+        Args:
+            data:
                 The data to be inserted.
-            index: @int, default: len(self)
+            index: @int
                 The index at which data should be inserted.
 
         Raise:
@@ -88,29 +106,62 @@ class LinkedList:
             self.__head = Node(data)
             return
 
-        # Set data at index
-        if index in range(len(self)):
-            if index == 0: # if head of linked list
-                self.__insert_at_start(data)
-            else:
-                self.__insert_at_index(data, index)
-        elif index == len(self): # if tail of linked list
-            self.__insert_at_end(data)
-        else:
+        if index >= len(self):
             raise IndexError
 
+        new_node = Node(data)
+        prev_node = self.__get_node(index)
+
+        new_node.next = prev_node.next
+        prev_node.next = new_node
+
+    def append(self, data) -> None:
+        """Add data at the tail of linked list.
+
+        Args:
+            data:
+                New data to add to linked list.
+        """
+        if self.__isEmpty():
+            self.__head = Node(data)
+            return
+
+        last_node = self.__get_last_node()
+        last_node.next = Node(data)
+
+    # Deletion operation
     def delete(self, index: int) -> None:
-        """Delete Node at index."""
-        # Delete Node at index
-        if index in range(len(self)):
-            if index == 0: # if head of linked list
-                self.__delete_from_start()
-            else:
-                self.__delete_at_index(index)
-        elif index == len(self): # if tail of linked list
-            self.__delete_from_end()
-        else:
+        """Delete Node at index.
+
+        Args:
+            index: @int
+                The required Node index.
+
+        Raise:
+            IndexError:
+                Raises when given index not exist.
+        """
+        if self.__isEmpty() or index >= len(self):
             raise IndexError
+
+        if index == 0:
+            self.__head = None
+            return
+
+        pre_node = self.__get_prev_node(index)
+        pre_node.next = pre_node.next.next
+
+    def pop(self) -> Any:
+        """Delete last Node and return it.
+
+        Return:
+            data:
+                The last Node data.
+        """
+        last_node = self.__get_last_node()
+        pre_node = self.__get_prev_node((len(self) - 1))
+        pre_node.next = None
+        return last_node.data
 
     def get(self, index, default = None) -> Any:
         """Retrieves data from index.
@@ -148,67 +199,23 @@ class LinkedList:
             return False
         return True
 
-    # Insertion Operations
-    def __insert_at_start(self, data) -> None:
-        """Add data at the head of linked list.
-
-        Args:
-            data: @any
-                The data to be inserted.
-        """
-        new_node = Node(data)
-        new_node.next = self.__head
-        self.__head = new_node
-
-    def __insert_at_index(self, data, index) -> None:
-        """Insert data at specific index."""
-        new_node = Node(data)
-        prev_node = self.__get_prev_node(index)
-
-        new_node.next = prev_node.next
-        prev_node.next = new_node
-
-    def __insert_at_end(self, data) -> None:
-        """Add data at the tail of linked list.
-
-        Args:
-            data: @any
-                The data to be inserted.
-        """
-        if not self.__head:
-            self.__head = Node(data)
-            return
-
-        last_node = self.__get_last_node()
-        last_node.next = Node(data)
-
-    # Deleting Operations
-    def __delete_from_start(self) -> None:
-        """Delete Node from head."""
-        self.__head = self.__head.next
-
-    def __delete_at_index(self, index) -> None:
-        """Delete Node by index."""
-        pre_node = self.__get_prev_node(index)
-        pre_node.next = pre_node.next.next
-
-    def __delete_from_end(self) -> None:
-        """Delete Node form tail."""
-        pre_last_node = self.__head
-        while pre_last_node.next.next:
-            pre_last_node = pre_last_node.next
-        pre_last_node.next = None
-
     # Node getting operations
     def __get_node(self, index) -> Node:
         """Fetches Node in linked list.
         
         Args:
-            index: The index of desired Node.
+            index:
+                The index of desired Node.
 
         Return:
-            inde
+            Node:
+                The node of index.
         """
+        node = self.__head
+        for i in range(index):
+            if node.next:
+                node = node.next
+        return node
 
     def __get_prev_node(self, index) -> Node:
         """Fetches the previous Node.
