@@ -8,12 +8,54 @@ class LinkedListTestCase(unittest.TestCase):
     """Test case for LinkedList."""
     def setUp(self) -> None:
         self.list = LinkedList()
+        self.test_cases = 5
 
     def test_len(self):
         """Tests linked list len() function"""
         self.assertEqual(len(self.list), 0, "Should equal 0")
-        self.__insert(5)
+        self.__insert(self.test_cases)
         self.assertEqual(len(self.list), 5, "Should equal 5")
+
+    def test_contains(self):
+        """Tests for key in linked list."""
+        self.__insert(self.test_cases)
+
+        for i in range(self.test_cases):
+            self.assertTrue(i in self.list, "Should return True.")
+
+        self.assertFalse(self.test_cases in self.list, "Should return False.")
+
+    def test_getitem(self):
+        """Test for list[key]"""
+        self.__insert(self.test_cases)
+
+        for i in range(self.test_cases):
+            self.assertEqual(self.list[i], i, f"Should equal {i}")
+
+        with self.assertRaisesRegex(IndexError, "Index out of range."):
+            self.list[self.test_cases]
+
+    def test_setitem(self):
+        """Test for list[key] = value"""
+        self.__insert(self.test_cases)
+
+        for i in range(self.test_cases):
+            self.list[i] = self.test_cases + i
+            self.assertEqual(self.list[i], self.test_cases + i, f"Should equal {self.test_cases + i}")
+
+        with self.assertRaisesRegex(IndexError, "Index out of range."):
+            self.list[self.test_cases]
+
+    def test_delitem(self):
+        """Test for 'del list[key]'."""
+        self.__insert(self.test_cases)
+
+        del self.list[2]
+        self.assertEqual(len(self.list), self.test_cases - 1,
+            f"Length should equal {self.test_cases - 1}.")
+
+        with self.assertRaisesRegex(IndexError, "Index out of range."):
+            self.list[self.test_cases]
 
     def test_iteration(self):
         """Test linked list iteration"""
@@ -35,49 +77,55 @@ class LinkedListTestCase(unittest.TestCase):
 
     def test_push(self):
         """Test LinkedList push method."""
-        for i in range(5):
+        test_cases = 5
+        for i in range(test_cases):
             self.assertIsNone(self.list.push(i))
 
-        test_case = (4, 3, 2, 1, 0)
-        self.assertEqual(self.list.display(), (4, 3, 2, 1, 0), f"Should equal {test_case}")
+        list_test = [num for num in range((test_cases - 1), -1, -1)]
+        self.assertEqual(self.list.display(), list_test, f"Should equal {list_test}")
+
+    def test_insert(self):
+        """Test LinkedList insert function"""
+        pass
 
     def test_append(self):
         """Test LinkedList append method."""
-        list_num = 5
-        for i in range(list_num):
+        for i in range(self.test_cases):
             self.assertIsNone(self.list.append(i))
 
-        test_case = tuple(num for num in range(list_num))
-        self.assertEqual(self.list.display(), test_case, f"Should equal {test_case}")
+        list_test = [num for num in range(self.test_cases)]
+        self.assertEqual(self.list.display(), list_test, f"Should equal {list_test}")
 
-    def test_insert_after(self):
-        """Test LinkedList insert function"""
-        # Empty insert
-        self.assertIsNone(self.list.insert_after(0, 0))
-        self.assertEqual(self.list.get(0), 0, "Should equal 0")
-
-        # Insert
-        self.assertIsNone(self.list.insert_after(1, 0))
-        self.assertEqual(self.list.get(1), 1, "Should equal 1")
-
-        self.assertIsNone(self.list.insert_after(2, 0))
-        self.assertEqual(self.list.get(1), 2, "Should equal 2")
-
-        self.assertEqual(self.list.display(), (0, 2, 1), "Should equal (0, 2, 1)")
-
-        # IndexError
-        with self.assertRaises(IndexError, msg= "Should raises IndexError."):
-            self.list.insert_after(5, 3)
-
-    def test_delete(self):
+    def test_remove(self):
         """Tests linked list delete method"""
-        self.__insert(5)
+        pass
 
-        self.assertIsNone(self.list.delete(1), "Should return None.")
-        self.assertEqual(len(self.list), 4, "Should equal 4.")
+    def test_pop(self):
+        """Test linked list pop method"""
+        self.__insert(self.test_cases)
+        list_test = [num for num in range(self.test_cases)]
 
-        with self.assertRaises(IndexError, msg= "Should rasies IndexError."):
-            self.list.delete(6)
+        # Remove last item
+        removed_item = list_test.pop()
+        self.assertEqual(self.list.pop(), removed_item, f"Should equal {removed_item}")
+
+        # Remove first item
+        removed_item = list_test.pop(0)
+        self.assertEqual(self.list.pop(0), removed_item, f"Should equal {removed_item}")
+
+        # Remove from middle
+        removed_item = list_test.pop(1)
+        self.assertEqual(self.list.pop(1), removed_item, f"Should equal {removed_item}")
+
+    def test_clear(self):
+        """Test linked list clear method"""
+        self.__insert(self.test_cases)
+        self.list.clear()
+        self.assertEqual(len(self.list), 0, "Should equal 0")
+
+    def test_index(self):
+        """Test linked list index method."""
+        pass
 
     def test_get(self):
         """Test linked list get method"""
@@ -86,11 +134,19 @@ class LinkedListTestCase(unittest.TestCase):
         self.assertEqual(self.list.get(2), 2, "Should equal 2")
         self.assertIsNone(self.list.get(6), "Should returns None.")
 
+    def test_count(self):
+        """Test linked list count method."""
+        pass
+
+    def test_reverse(self):
+        """Test linked list reverse method."""
+        pass
+
     def test_display(self):
         """Test linked list display method"""
         self.__insert(5)
 
-        list_test = tuple(num for num in range(5))
+        list_test = [num for num in range(5)]
         self.assertEqual(self.list.display(), list_test, f"Should equal {list_test}")
 
     def __insert(self, items):
