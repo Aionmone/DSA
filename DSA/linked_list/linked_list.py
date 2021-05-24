@@ -70,14 +70,11 @@ class LinkedList:
             length: @int
                 The length of linked list, 0 if empty.
         """
-        if self.__isEmpty():
-            return 0
-        
-        length = 1
-        node = self.__head
-        while node.next != None:
+        length = 0
+        current = self.__head
+        while current:
             length += 1
-            node = node.next
+            current = current.next
         return length
 
     def __contains__(self, key) -> bool:
@@ -97,7 +94,7 @@ class LinkedList:
             current = current.next
         return False
 
-    def __getitem__(self, key) -> Any:
+    def __getitem__(self, key: int) -> Any:
         """x.__getitem__(y) <==> x[y]
 
         Args:
@@ -112,12 +109,12 @@ class LinkedList:
             IndexError:
                 Raises if list is empty or index out of range.
         """
-        key = self.__check_index(key)
+        key = self.__correct_index(key)
 
         node = self.__get_node(key)
         return node.data
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: int, value) -> None:
         """Set self[key] to value.
 
         Args:
@@ -130,19 +127,19 @@ class LinkedList:
             IndexError:
                 Raises if list is empty or index out of range.
         """
-        key = self.__check_index(key)
+        key = self.__correct_index(key)
 
         node = self.__get_node(key)
         node.data = value
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: int) -> None:
         """Return key in self.
 
         Args:
             key:
                 Index of linked list.
         """
-        key = self.__check_index(key)
+        key = self.__correct_index(key)
 
         if key == 0:
             self.__head = self.__head.next
@@ -153,7 +150,7 @@ class LinkedList:
 
     def __iter__(self):
         """Iteriate over linked list nodes."""
-        self.temp = self.__head
+        self.current = self.__head
         return self
 
     def __next__(self):
@@ -167,9 +164,9 @@ class LinkedList:
             StopIteration:
                 Stops iteration when reache last Node.
         """
-        if self.temp:
-            data = self.temp.data
-            self.temp = self.temp.next
+        if self.current:
+            data = self.current.data
+            self.current = self.current.next
             return data
         else:
             raise StopIteration
@@ -199,7 +196,7 @@ class LinkedList:
             IndexError:
                 Raises when given index not exist.
         """
-        index = self.__check_index(index)
+        index = self.__correct_index(index)
 
         if index == 0:
             self.push(data)
@@ -242,13 +239,12 @@ class LinkedList:
     def pop(self, index: int = -1) -> Any:
         """Delete last Node and return it.
 
+        Args:
+            index: @int | Node index.
         Return:
-            data:
-                The last Node data.
-
+            data: The last Node data.
         Raise:
-            LinkedListEmpty:
-                Raises when linked list is empty.
+            IndexError: Index out of range.
         """
         node = self.__get_node(index)
         del self[index]
@@ -264,34 +260,25 @@ class LinkedList:
         Args:
             value:
                 Node data.
-
         Return:
             index: @int
                 Index of fist occurrence of value, -1 if not found.
         """
         pass
 
-    def get(self, index, default = None) -> Any:
+    def get(self, key, default = None) -> Any:
         """Retrieves data from index.
         
         Args:
-            index:
-                The index of node.
-            default:
-                The default return if index does't exist.
-            
+            key: Node index.
+            default: The default return if index does't exist.
         Return:
             data: The data of node, None if not exist.
         """
-        if index >= len(self):
+        if key >= len(self) or abs(key) > len(self):
             return default
 
-        node = self.__head
-        for i in range(index):
-            if node.next != None:
-                node = node.next
-
-        return node.data
+        return self[key]
 
     def Count(self) -> int:
         """Return number of occurrences of value.
@@ -325,16 +312,13 @@ class LinkedList:
             return False
         return True
 
-    def __check_index(self, index) -> int:
+    def __correct_index(self, index) -> int:
         """Checks if index is valid.
-        
+
         Return:
-            index: @int
-                Corrected index.
-        
+            index: @int | Corrected index.
         Raise:
-            IndexError:
-                Index out of range.
+            IndexError: Index out of range.
         """
         # Negative index
         if index < 0:
@@ -352,16 +336,13 @@ class LinkedList:
     # Node getting operations
     def __get_node(self, index: int) -> Node:
         """Fetches Node in linked list.
-        
-        Args:
-            index:
-                The index of desired Node.
 
+        Args:
+            index: @int | The index of desired Node.
         Return:
-            Node:
-                The node of index.
+            Node: The node of index.
         """
-        index = self.__check_index(index)
+        index = self.__correct_index(index)
 
         node = self.__head
         for i in range(index):
@@ -380,7 +361,7 @@ class LinkedList:
             Node: @object
                 Node of the previous Node.
         """
-        index = self.__check_index(index)
+        index = self.__correct_index(index)
 
         prev_node = self.__head
         for node in range(index):
