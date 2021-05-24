@@ -18,24 +18,50 @@ class LinkedList:
     """Singly linked list implementation.
 
     Methods:
+        __init__:
+            Init Linked List class.
         __len__:
             Fetches linked list length.
+        __contains__:
+            Return key in self.
+        __getitem__:
+            x.__getitem__(y) <==> x[y]
+        __setitem__:
+            Set self[key] to value.
+        __delitem__:
+            Delete self[key].
         __iter__:
             Iterate over linked list data.
+        __next__:
+            Fetches next Node.
         push:
             Add new node at head.
+        insert:
+            Add new data to linked list.
         append:
             Add new node at tail.
-        insert_after:
-            Add new data to linked list.
-        display:
-            Retern list representation of linked list.
+        remove:
+            Remove first occurrence of value.
+        pop:
+            Delete last Node and return it.
+        clear:
+            Remove all items from linked list.
+        index:
+            Return first index of value.
         get:
             Retrieves data from linked list.
+        count:
+            Return number of occurrences of value.
+        reverse:
+            Reverse linked list.
+        display:
+            Retern list representation of linked list.
     """
-    def __init__(self) -> None:
+    def __init__(self, iteriable = None) -> None:
         """Initiate LinkedList class."""
         self.__head = None
+        if iteriable:
+            self.__iteriate(iteriable)
 
     def __len__(self) -> int:
         """Return the length of list.
@@ -46,13 +72,84 @@ class LinkedList:
         """
         if self.__isEmpty():
             return 0
-
+        
         length = 1
         node = self.__head
         while node.next != None:
             length += 1
             node = node.next
         return length
+
+    def __contains__(self, key) -> bool:
+        """Return key in self.
+
+        Args:
+            key:
+                The key to search for.
+
+        Return:
+            @bool: True if key exitst, False otherwise.
+        """
+        current = self.__head
+        while current:
+            if current.data == key:
+                return True
+            current = current.next
+        return False
+
+    def __getitem__(self, key) -> Any:
+        """x.__getitem__(y) <==> x[y]
+
+        Args:
+            key:
+                Index of linked list.
+
+        Return:
+            data:
+                The Node data.
+
+        Raise:
+            IndexError:
+                Raises if list is empty or index out of range.
+        """
+        key = self.__check_index(key)
+
+        node = self.__get_node(key)
+        return node.data
+
+    def __setitem__(self, key, value):
+        """Set self[key] to value.
+
+        Args:
+            key:
+                Index of linked list.
+            value:
+                The value to be added.
+
+        Raise:
+            IndexError:
+                Raises if list is empty or index out of range.
+        """
+        key = self.__check_index(key)
+
+        node = self.__get_node(key)
+        node.data = value
+
+    def __delitem__(self, key):
+        """Return key in self.
+
+        Args:
+            key:
+                Index of linked list.
+        """
+        key = self.__check_index(key)
+
+        if key == 0:
+            self.__head = self.__head.next
+            return
+
+        pre_node = self.__get_prev_node(key)
+        pre_node.next = pre_node.next.next
 
     def __iter__(self):
         """Iteriate over linked list nodes."""
@@ -63,7 +160,7 @@ class LinkedList:
         """Fetches next node.
 
         Return:
-            Node data: @any
+            Node data:
                 The data in linked list node.
 
         Raise:
@@ -89,8 +186,8 @@ class LinkedList:
         new_node.next = self.__head
         self.__head = new_node
 
-    def insert_after(self, data: Any, index: int) -> None:
-        """Insert new data after index.
+    def insert(self, index: int, data) -> None:
+        """Insert new data before index.
 
         Args:
             data:
@@ -102,15 +199,14 @@ class LinkedList:
             IndexError:
                 Raises when given index not exist.
         """
-        if self.__isEmpty():
-            self.__head = Node(data)
+        index = self.__check_index(index)
+
+        if index == 0:
+            self.push(data)
             return
 
-        if index >= len(self):
-            raise IndexError
-
         new_node = Node(data)
-        prev_node = self.__get_node(index)
+        prev_node = self.__get_prev_node(index)
 
         new_node.next = prev_node.next
         prev_node.next = new_node
@@ -130,38 +226,50 @@ class LinkedList:
         last_node.next = Node(data)
 
     # Deletion operation
-    def delete(self, index: int) -> None:
+    def remove(self, value) -> None:
         """Delete Node at index.
 
         Args:
-            index: @int
-                The required Node index.
+            value:
+                Node data for.
 
         Raise:
-            IndexError:
-                Raises when given index not exist.
+            ValueError:
+                Value is not present.
         """
-        if self.__isEmpty() or index >= len(self):
-            raise IndexError
+        pass
 
-        if index == 0:
-            self.__head = None
-            return
-
-        pre_node = self.__get_prev_node(index)
-        pre_node.next = pre_node.next.next
-
-    def pop(self) -> Any:
+    def pop(self, index: int = -1) -> Any:
         """Delete last Node and return it.
 
         Return:
             data:
                 The last Node data.
+
+        Raise:
+            LinkedListEmpty:
+                Raises when linked list is empty.
         """
-        last_node = self.__get_last_node()
-        pre_node = self.__get_prev_node((len(self) - 1))
-        pre_node.next = None
-        return last_node.data
+        node = self.__get_node(index)
+        del self[index]
+        return node.data
+
+    def clear(self) -> None:
+        """Remove all items from linked list."""
+        self.__head = None
+
+    def index(self, value) -> int:
+        """Return first index of value.
+        
+        Args:
+            value:
+                Node data.
+
+        Return:
+            index: @int
+                Index of fist occurrence of value, -1 if not found.
+        """
+        pass
 
     def get(self, index, default = None) -> Any:
         """Retrieves data from index.
@@ -185,9 +293,27 @@ class LinkedList:
 
         return node.data
 
-    def display(self) -> str:
-        """Retern tuple representation of linked list."""
-        return tuple(self)
+    def Count(self) -> int:
+        """Return number of occurrences of value.
+        
+        Return:
+            @int: Number of occurrences of value.
+        """
+        pass
+
+    def reverse(self) -> None:
+        """Reverse linked list."""
+        pass
+
+    def display(self) -> list:
+        """Retern list representation of linked list."""
+        return list(self)
+
+    # Private methods
+    def __iteriate(self, iteriable) -> None:
+        """Make linked list from iteriable"""
+        for data in iteriable:
+            self.append(data)
 
     def __isEmpty(self) -> bool:
         """Checks if linked list is empty.
@@ -199,8 +325,32 @@ class LinkedList:
             return False
         return True
 
+    def __check_index(self, index) -> int:
+        """Checks if index is valid.
+        
+        Return:
+            index: @int
+                Corrected index.
+        
+        Raise:
+            IndexError:
+                Index out of range.
+        """
+        # Negative index
+        if index < 0:
+            index = len(self) + index
+            if index in range(len(self)):
+                return index
+            else:
+                raise IndexError("Index out of range.")
+
+        # Positive index
+        if index < len(self):
+            return index
+        raise IndexError("Index out of range.")
+
     # Node getting operations
-    def __get_node(self, index) -> Node:
+    def __get_node(self, index: int) -> Node:
         """Fetches Node in linked list.
         
         Args:
@@ -211,13 +361,15 @@ class LinkedList:
             Node:
                 The node of index.
         """
+        index = self.__check_index(index)
+
         node = self.__head
         for i in range(index):
             if node.next:
                 node = node.next
         return node
 
-    def __get_prev_node(self, index) -> Node:
+    def __get_prev_node(self, index: int) -> Node:
         """Fetches the previous Node.
 
         Args:
@@ -228,6 +380,8 @@ class LinkedList:
             Node: @object
                 Node of the previous Node.
         """
+        index = self.__check_index(index)
+
         prev_node = self.__head
         for node in range(index):
             if node == (index - 1):
