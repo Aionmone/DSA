@@ -321,16 +321,13 @@ class LinkedList:
             IndexError: Index out of range.
         """
         # Negative index
-        if index < 0:
-            index = len(self) + index
-            if index in range(len(self)):
-                return index
-            else:
-                raise IndexError("Index out of range.")
+        if index < 0 and abs(index) <= len(self):
+            return len(self) + index
 
         # Positive index
         if index < len(self):
             return index
+
         raise IndexError("Index out of range.")
 
     # Node getting operations
