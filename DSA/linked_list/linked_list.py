@@ -227,12 +227,10 @@ class LinkedList:
         """Delete Node at index.
 
         Args:
-            value:
-                Node data for.
+            value: Node data.
 
         Raise:
-            ValueError:
-                Value is not present.
+            ValueError: Value is not present.
         """
         pass
 
@@ -292,13 +290,22 @@ class LinkedList:
         except IndexError:
             return default
 
-    def Count(self) -> int:
+    def count(self, key) -> int:
         """Return number of occurrences of value.
-        
+
+        Args:
+            key: The Node data
+
         Return:
             @int: Number of occurrences of value.
         """
-        pass
+        occurrence = 0
+        current = self.__head
+        while current:
+            if current.data == key:
+                occurrence += 1
+            current = current.next
+        return occurrence
 
     def reverse(self) -> None:
         """Reverse linked list."""
