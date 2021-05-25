@@ -98,7 +98,13 @@ class LinkedListTestCase(unittest.TestCase):
 
     def test_remove(self):
         """Tests linked list delete method"""
-        pass
+        self.__insert(self.test_cases)
+        self.list.remove(0)
+        self.assertEqual(len(self.list), 4, "List length should equal 4")
+
+        with self.assertRaisesRegex(ValueError,
+            f"Value '{self.test_cases} not present."):
+            self.list.remove(self.test_cases)
 
     def test_pop(self):
         """Test linked list pop method"""
@@ -142,11 +148,23 @@ class LinkedListTestCase(unittest.TestCase):
 
     def test_count(self):
         """Test linked list count method."""
-        pass
+        self.__insert(self.test_cases)
+        self.assertEqual(self.list.count(0), 1, "Should equal 1")
+
+        self.list.append(0)
+        self.assertEqual(self.list.count(0), 2, "Should equal 2")
+
+        # Not exist
+        self.assertEqual(self.list.count(5), 0, "Should equal 0")
 
     def test_reverse(self):
         """Test linked list reverse method."""
-        pass
+        self.__insert(self.test_cases)
+        self.list.reverse()
+
+        list_test = [num for num in range((self.test_cases -1), -1, -1)]
+        self.assertEqual(self.list.display(), list_test,
+            f"List should equal {list_test}.")
 
     def test_display(self):
         """Test linked list display method"""
