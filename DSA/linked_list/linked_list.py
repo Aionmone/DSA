@@ -264,7 +264,19 @@ class LinkedList:
             index: @int
                 Index of fist occurrence of value, -1 if not found.
         """
-        pass
+        found = False
+        index = -1
+        current = self.__head
+        while current:
+            index += 1
+            if current.data == value:
+                found = True
+                break
+            current = current.next
+
+        if found:
+            return index
+        raise ValueError(f"Value '{value}' not present.")
 
     def get(self, key, default = None) -> Any:
         """Retrieves data from index.
@@ -275,10 +287,10 @@ class LinkedList:
         Return:
             data: The data of node, None if not exist.
         """
-        if key >= len(self) or abs(key) > len(self):
+        try:
+            return self[key]
+        except IndexError:
             return default
-
-        return self[key]
 
     def Count(self) -> int:
         """Return number of occurrences of value.
