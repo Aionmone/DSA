@@ -103,7 +103,7 @@ class LinkedListTestCase(unittest.TestCase):
         self.assertEqual(len(self.list), 4, "List length should equal 4")
 
         with self.assertRaisesRegex(ValueError,
-            f"Value '{self.test_cases} not present."):
+            f"Value '{self.test_cases}' not present."):
             self.list.remove(self.test_cases)
 
     def test_pop(self):
