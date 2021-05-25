@@ -318,7 +318,14 @@ class LinkedList:
 
     def reverse(self) -> None:
         """Reverse linked list."""
-        pass
+        prev = next = None
+        current = self.__head
+        while current:
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+        self.__head = prev
 
     def display(self) -> list:
         """Retern list representation of linked list."""
