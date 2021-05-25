@@ -224,7 +224,7 @@ class LinkedList:
 
     # Deletion operation
     def remove(self, value) -> None:
-        """Delete Node at index.
+        """remove first occurrence of value.
 
         Args:
             value: Node data.
@@ -232,7 +232,16 @@ class LinkedList:
         Raise:
             ValueError: Value is not present.
         """
-        pass
+        index = -1
+        current = self.__head
+        while current:
+            index += 1
+            if current.data == value:
+                del self[index]
+                return
+            current = current.next
+
+        raise ValueError(f"Value '{value}' not present.")
 
     def pop(self, index: int = -1) -> Any:
         """Delete last Node and return it.
