@@ -125,7 +125,13 @@ class LinkedListTestCase(unittest.TestCase):
 
     def test_index(self):
         """Test linked list index method."""
-        pass
+        self.__insert(self.test_cases)
+
+        for i in range(self.test_cases):
+            self.assertEqual(self.list.index(i), i, f"Should equal {i}")
+
+        with self.assertRaisesRegex(ValueError, f"Value '{self.test_cases}' not present."):
+            self.list.index(self.test_cases)
 
     def test_get(self):
         """Test linked list get method"""
